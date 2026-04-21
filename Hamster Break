@@ -1,0 +1,274 @@
+#include "Particle.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_ST7735.h"
+
+
+#define CS S3
+#define RST D0
+#define DC D1
+
+
+Adafruit_ST7735 display = Adafruit_ST7735(CS, DC, RST);
+
+
+#define BLACK  0x0000
+#define WHITE  0xFFFF
+#define BLUE   0x001F
+#define RED    0xF800
+#define GRAY   0x8410
+#define PINK   0xFCB7
+
+
+void flashBlueRed();
+void drawHamsterFace();
+void drawClock(int number);
+
+
+void setup() {
+ display.initR(INITR_GREENTAB);
+ display.fillScreen(BLACK);
+}
+
+
+void loop() {
+ flashBlueRed();
+
+
+ drawClock(15);
+ delay(2000);
+ drawHamsterFace();
+ delay(2000);
+
+
+ drawClock(10);
+ delay(2000);
+ drawHamsterFace();
+ delay(2000);
+
+
+ drawClock(5);
+ delay(2000);
+
+
+ flashBlueRed();
+}
+
+
+void flashBlueRed() {
+ display.fillScreen(BLUE);
+ delay(200);
+ display.fillScreen(RED);
+ delay(200);
+ display.fillScreen(BLUE);
+ delay(200);
+ display.fillScreen(RED);
+ delay(200);
+ display.fillScreen(BLUE);
+ delay(200);
+ display.fillScreen(RED);
+ delay(200);
+}
+
+
+void drawHamsterFace() {
+ display.fillScreen(WHITE);
+
+
+ // SMILE - draw first, mask from top of screen down so no leaking
+ display.drawCircle(64, 62, 32, BLACK);
+ display.drawCircle(64, 62, 33, BLACK);
+ display.fillRect(0, 0, 128, 80, WHITE); // mask from very top down, leaves bottom arc
+
+
+ // LEFT EYE - full circle with shine
+ display.fillCircle(40, 44, 11, BLACK);
+ display.fillCircle(36, 39, 3, WHITE);
+
+
+ // RIGHT EYE - full circle with shine
+ display.fillCircle(88, 44, 11, BLACK);
+ display.fillCircle(84, 39, 3, WHITE);
+
+
+ // NOSE
+ display.fillRoundRect(60, 63, 8, 5, 2, PINK);
+ display.fillRoundRect(61, 59, 6, 5, 2, PINK);
+ display.fillRoundRect(62, 56, 4, 4, 2, PINK);
+ display.drawLine(62, 56, 58, 68, BLACK);
+ display.drawLine(62, 56, 70, 68, BLACK);
+ display.drawLine(58, 68, 70, 68, BLACK);
+
+
+ // CHEEK MARKS left
+ display.drawLine(18, 68, 28, 65, PINK);
+ display.drawLine(16, 75, 27, 73, PINK);
+ display.drawLine(18, 82, 28, 81, PINK);
+
+
+ // CHEEK MARKS right
+ display.drawLine(100, 65, 110, 68, PINK);
+ display.drawLine(101, 73, 112, 75, PINK);
+ display.drawLine(100, 81, 110, 82, PINK);
+}
+
+
+void drawClock(int number) {
+ display.fillScreen(WHITE);
+
+
+ display.drawCircle(64, 55, 50, BLACK);
+ display.drawCircle(64, 55, 49, BLACK);
+ display.drawCircle(64, 55, 48, BLACK);
+
+
+ display.fillRect(62, 7, 5, 7, BLACK);
+ display.fillRect(62, 96, 5, 7, BLACK);
+ display.fillRect(16, 53, 7, 5, BLACK);
+ display.fillRect(105, 53, 7, 5, BLACK);
+
+
+ // big number centered
+ display.setTextSize(4);
+ display.setTextColor(BLACK);
+ if (number < 10) {
+   display.setCursor(52, 38); // single digit - one char wide (24px), center of 128 = 64, so 64-12=52
+ } else {
+   display.setCursor(40, 38); // two digits - two chars wide (48px), so 64-24=40
+ }
+ display.print(number);
+
+
+ display.setTextSize(1);
+ display.setTextColor(BLACK);
+ display.setCursor(42, 115);
+ display.print("minutes");
+}
+
+
+
+
+
+#include "Particle.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_ST7735.h"
+
+
+
+
+#define CS S3
+#define RST D0
+#define DC D1
+
+
+
+
+Adafruit_ST7735 display = Adafruit_ST7735(CS, DC, RST);
+
+
+
+
+#define WHITE  0xFFFF
+#define BLACK  0x0000
+#define PINK   0xFCB7
+#define RED    0xF800
+
+
+
+
+void drawRat();
+
+
+
+
+void setup() {
+display.initR(INITR_REDTAB);
+display.fillScreen(WHITE);
+drawRat();
+}
+
+
+
+
+void loop() {
+}
+
+
+
+
+void drawRat() {
+display.fillScreen(WHITE);
+
+
+
+
+// MOUTH FILL
+display.fillCircle(64, 60, 54, BLACK);
+display.drawCircle(64, 60, 55, BLACK);
+display.drawCircle(64, 60, 56, BLACK);
+display.fillRect(0, 0, 128, 90, WHITE);
+
+
+
+
+// LEFT EYE - full circle then mask bottom half to make semicircle
+display.fillCircle(40, 44, 10, BLACK);
+display.fillRect(30, 44, 22, 12, WHITE); // mask bottom half
+// shine
+display.fillCircle(37, 38, 3, WHITE);
+
+
+
+
+// RIGHT EYE - same trick
+display.fillCircle(88, 44, 10, BLACK);
+display.fillRect(78, 44, 22, 12, WHITE); // mask bottom half
+// shine
+display.fillCircle(85, 38, 3, WHITE);
+
+
+
+
+// NOSE - small rounded triangle
+display.fillRoundRect(60, 63, 8, 5, 2, PINK);
+display.fillRoundRect(61, 59, 6, 5, 2, PINK);
+display.fillRoundRect(62, 56, 4, 4, 2, PINK);
+display.drawLine(62, 56, 58, 68, BLACK);
+display.drawLine(62, 56, 70, 68, BLACK);
+display.drawLine(58, 68, 70, 68, BLACK);
+
+
+
+
+// CHEEK MARKS - small curved lines on each cheek
+// left cheek - three short diagonal lines
+display.drawLine(18, 68, 28, 65, PINK);
+display.drawLine(16, 75, 27, 73, PINK);
+display.drawLine(18, 82, 28, 81, PINK);
+
+
+
+
+// right cheek
+display.drawLine(100, 65, 110, 68, PINK);
+display.drawLine(101, 73, 112, 75, PINK);
+display.drawLine(100, 81, 110, 82, PINK);
+
+
+
+
+// TONGUE first
+display.fillRoundRect(38, 100, 52, 18, 8, RED);
+
+
+
+
+// TEETH centered
+display.fillRoundRect(42, 90, 20, 22, 3, WHITE);
+display.drawRoundRect(42, 90, 20, 22, 3, BLACK);
+display.fillRoundRect(66, 90, 20, 22, 3, WHITE);
+display.drawRoundRect(66, 90, 20, 22, 3, BLACK);
+display.drawLine(64, 90, 64, 112, BLACK);
+display.drawLine(65, 90, 65, 112, BLACK);
+}
+
+
